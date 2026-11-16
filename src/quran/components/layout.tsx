@@ -25,12 +25,10 @@ export function Layout({ children }: { children: ReactNode }) {
 
   // Extra bottom space so the bottom banner ad never covers content.
   return (
-    <div className="min-h-[100dvh] w-full bg-muted/40 transition-colors duration-300">
-      <div className="app-phone-column mx-auto flex min-h-[100dvh] w-full max-w-[var(--app-phone-width)] flex-col bg-background">
-        <main className="app-content flex-1 w-full px-4 py-2">
-          {children}
-        </main>
-      </div>
+    <div className="min-h-[100dvh] flex flex-col w-full bg-background transition-colors duration-300">
+      <main className="app-content flex-1 w-full px-4 py-2">
+        {children}
+      </main>
     </div>
   );
 }

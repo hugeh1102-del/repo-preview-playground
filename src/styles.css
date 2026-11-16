@@ -184,9 +184,9 @@
   --quran-home-surface: #f5f1ea;
   position: relative;
   width: 100%;
-  height: 100dvh;
-  min-height: 100dvh;
-  max-height: 100dvh;
+  height: calc(100dvh - var(--bottom-navigation-space));
+  min-height: calc(100dvh - var(--bottom-navigation-space));
+  max-height: calc(100dvh - var(--bottom-navigation-space));
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -198,7 +198,7 @@
 
 .quran-home-art {
   position: relative;
-  width: min(100%, var(--app-phone-width));
+  width: min(100vw, calc(100dvh * 9 / 16));
   min-height: 100dvh;
   padding-bottom: clamp(24px, 4vw, 48px);
   overflow: visible;
@@ -227,14 +227,14 @@
   bottom: 0;
   left: 50%;
   z-index: 10;
-  width: min(100%, var(--app-phone-width));
-  height: clamp(150px, 22dvh, 240px);
+  width: min(100vw, calc(100dvh * 9 / 16));
+  height: clamp(170px, 23dvh, 260px);
   pointer-events: none;
   transform: translateX(-50%);
   background-color: var(--quran-home-surface);
   background-position: center bottom;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100% auto;
   -webkit-mask-image: linear-gradient(
     to bottom,
     transparent 0%,
@@ -257,7 +257,7 @@
   position: relative;
   right: auto;
   left: auto;
-  padding: 0 7% calc(clamp(150px, 22dvh, 240px) + var(--bottom-navigation-space) + 8px);
+  padding: 0 8% calc(clamp(170px, 23dvh, 260px) + clamp(24px, 4vw, 48px));
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-content: start;
@@ -265,10 +265,6 @@
   z-index: 1;
 }
 .home-button-stack > :last-child { grid-column: 1 / -1; }
-/* On screens wider than a phone, the phone-sized column gets a soft edge. */
-@media (min-width: 520px) {
-  .quran-home-art, .app-phone-column { box-shadow: 0 0 40px hsl(40 20% 30% / 0.1); }
-}
 
 /* Home buttons: one shared card so every button has the same size, colors and type. */
 .home-card {
