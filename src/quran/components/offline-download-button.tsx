@@ -132,7 +132,7 @@ export function OfflineDownloadButton({
         <button
           type="button"
           onClick={handleClick}
-          className="w-8 h-8 flex items-center justify-center rounded-full text-muted-foreground border border-border hover:text-red-600 hover:border-red-300 transition-colors"
+          className="w-8 h-8 flex items-center justify-center rounded-full text-muted-foreground border border-border hover:text-destructive hover:border-destructive/45 transition-colors"
           aria-label="حذف السورة من التحميلات"
           title="حذف السورة من التحميلات"
           data-testid={`btn-delete-download-${type}-${number}`}
@@ -187,7 +187,7 @@ export function OfflineDownloadButton({
         <button
           type="button"
           onClick={handleCancelClick}
-          className="w-6 h-6 flex items-center justify-center rounded-full text-muted-foreground border border-border hover:text-red-600 hover:border-red-300 transition-colors"
+          className="w-6 h-6 flex items-center justify-center rounded-full text-muted-foreground border border-border hover:text-destructive hover:border-destructive/45 transition-colors"
           aria-label="إلغاء التحميل"
           title="إلغاء التحميل"
           data-testid={`btn-cancel-download-${type}-${number}`}
@@ -207,7 +207,7 @@ export function OfflineDownloadButton({
         showLabel ? "px-3 py-1.5 text-xs font-sans border" : "w-9 h-9 flex-shrink-0"
       } ${
         status === "error"
-          ? "text-red-600 border-red-200 bg-red-50"
+          ? "text-destructive border-destructive/35 bg-destructive/8"
           : "text-muted-foreground border-border hover:text-primary hover:border-primary/50"
       } disabled:opacity-70`}
       aria-label={label}

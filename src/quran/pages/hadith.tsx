@@ -71,7 +71,7 @@ export default function Hadith() {
             </div>
             <Link
               href="/hadith/favorites"
-              className="flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-sans font-bold text-amber-700 hover:bg-amber-100 transition-colors whitespace-nowrap"
+              className="flex items-center gap-1.5 rounded-full border border-accent/45 bg-accent/10 px-3 py-2 text-xs font-sans font-bold text-accent-foreground hover:bg-accent/20 transition-colors whitespace-nowrap"
               data-testid="link-hadith-favorites"
             >
               <Star className="w-4 h-4" fill="currentColor" />
@@ -206,7 +206,7 @@ export function HadithFavorites() {
                 <button onClick={() => download(item)} className="p-2 text-muted-foreground hover:text-primary" title="تحميل الحديث" aria-label="تحميل الحديث">
                   <Download className="w-4 h-4" />
                 </button>
-                <button onClick={() => removeFavorite(item)} className="p-2 text-amber-500 hover:text-red-500" title="إزالة من المفضلة" aria-label="إزالة من المفضلة">
+                <button onClick={() => removeFavorite(item)} className="p-2 text-muted-foreground hover:text-destructive" title="إزالة من المفضلة" aria-label="إزالة من المفضلة">
                   <Star className="w-4 h-4" fill="currentColor" />
                 </button>
               </div>
@@ -364,7 +364,7 @@ export function HadithReader() {
                 </button>
                 <button
                   onClick={() => toggleHadithFavorite(h.hadithnumber)}
-                   className={`inline-flex items-center justify-center gap-1.5 h-8 px-2.5 rounded-full transition-colors font-sans text-xs ${isFavorite ? "text-amber-500 bg-amber-50" : "text-muted-foreground hover:text-amber-500 hover:bg-amber-50"}`}
+                   className={`inline-flex items-center justify-center gap-1.5 h-8 px-2.5 rounded-full transition-colors font-sans text-xs ${isFavorite ? "text-accent bg-accent/10" : "text-muted-foreground hover:text-accent hover:bg-accent/10"}`}
                    title={isFavorite ? "إزالة من المفضلة" : "إضافة إلى المفضلة"}
                   aria-label={isFavorite ? "إزالة الحديث من المفضلة" : "إضافة الحديث إلى المفضلة"}
                   data-testid={`button-favorite-hadith-${h.hadithnumber}`}>
