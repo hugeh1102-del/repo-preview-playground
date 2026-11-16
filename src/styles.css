@@ -57,6 +57,8 @@
   --app-font-display: 'Marhey Variable', 'Marhey', 'Cairo Variable', sans-serif;
   --radius: 1.15rem;
   --bottom-navigation-height: 52px;
+  /* The app is laid out like a phone: full screen on phones, a phone-width column on bigger screens. */
+  --app-phone-width: 480px;
   --bottom-navigation-space: calc(var(--bottom-navigation-height) + env(safe-area-inset-bottom, 0px));
   --navigation-shadow: 0 -3px 16px hsl(var(--foreground) / 0.08);
   --startup-background: #f4f0e7;
@@ -114,7 +116,7 @@
   z-index: 1100;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  width: min(calc(100% - 64px), 360px);
+  width: min(calc(100% - 64px), calc(var(--app-phone-width) - 96px));
   height: var(--bottom-navigation-height);
   margin-bottom: 8px;
   padding: 5px 6px;
@@ -196,7 +198,7 @@
 
 .quran-home-art {
   position: relative;
-  width: 100%;
+  width: min(100%, var(--app-phone-width));
   min-height: 100dvh;
   padding-bottom: clamp(24px, 4vw, 48px);
   overflow: visible;
@@ -213,9 +215,7 @@
   display: block;
   height: auto;
   aspect-ratio: 1109 / 768;
-  max-height: 48dvh;
-  object-fit: cover;
-  object-position: center 45%;
+  object-fit: contain;
   flex: 0 0 auto;
   background: var(--quran-home-surface);
   box-shadow: none;
@@ -227,7 +227,7 @@
   bottom: 0;
   left: 50%;
   z-index: 10;
-  width: 100%;
+  width: min(100%, var(--app-phone-width));
   height: clamp(150px, 22dvh, 240px);
   pointer-events: none;
   transform: translateX(-50%);
@@ -257,24 +257,17 @@
   position: relative;
   right: auto;
   left: auto;
-  padding: 0 clamp(14px, 6vw, 48px) calc(clamp(150px, 22dvh, 240px) + var(--bottom-navigation-space) + 8px);
+  padding: 0 7% calc(clamp(150px, 22dvh, 240px) + var(--bottom-navigation-space) + 8px);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-content: start;
-  gap: clamp(8px, 1.1vw, 14px);
+  gap: clamp(8px, 2.4vw, 12px);
   z-index: 1;
 }
 .home-button-stack > :last-child { grid-column: 1 / -1; }
-/* Wider screens (tablets in landscape, desktops): spread the buttons across the width. */
-@media (min-width: 720px) {
-  .home-button-stack { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (min-width: 1200px) {
-  .home-button-stack { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1500px; margin-inline: auto; }
-}
-/* Landscape screens: keep the whole header picture visible instead of cropping it. */
-@media (orientation: landscape) {
-  .quran-home-header { object-fit: contain; max-height: 42dvh; }
+/* On screens wider than a phone, the phone-sized column gets a soft edge. */
+@media (min-width: 520px) {
+  .quran-home-art, .app-phone-column { box-shadow: 0 0 40px hsl(40 20% 30% / 0.1); }
 }
 
 .home-image-button {
@@ -283,7 +276,7 @@
   height: auto;
   flex: 0 0 auto;
   overflow: hidden;
-  border-radius: clamp(12px, 1.7vw, 26px);
+  border-radius: clamp(12px, 3.6vw, 18px);
   outline: none;
   box-shadow: 0 5px 12px rgba(74, 62, 44, 0.12);
   transition: transform 160ms ease, filter 160ms ease;
