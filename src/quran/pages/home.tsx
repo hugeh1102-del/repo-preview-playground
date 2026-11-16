@@ -1,72 +1,23 @@
 import { Link } from "@/quran/wouter-shim";
-import illuminatedBookAsset from "@/assets/home-buttons/illuminated-book-button.jpg.asset.json";
+import { ChevronLeft } from "lucide-react";
 import minshawiHeaderAsset from "@/assets/minshawi-header-cream.jpg";
 
 const homeBackground = `${import.meta.env.BASE_URL}quran-home-4k.jpg`;
-const buttonAsset = (name: string) =>
-  `${import.meta.env.BASE_URL}home-buttons/${name}.png`;
+const iconAsset = (name: string) => `${import.meta.env.BASE_URL}home-icons/${name}.png`;
 
+/** Every home button shares one card design; only the icon and text change. */
 const homeButtons = [
-  {
-    href: "/quran-audio",
-    image: "offline-new",
-    label: "القرآن الكريم مرتل بدون نت",
-    testid: "link-quran-audio",
-  },
-  {
-    href: "/quran-tajweed",
-    image: "tajweed-new",
-    label: "القرآن الكريم مجود",
-    testid: "link-quran-tajweed",
-  },
-  {
-    href: "/asma-husna",
-    image: "asma",
-    label: "أسماء الله الحسنى",
-    testid: "link-asma-husna",
-  },
-  {
-    href: "/hadith",
-    image: "hadith-new",
-    label: "الأحاديث النبوية",
-    testid: "link-hadith",
-  },
-  {
-    href: "/quran-written",
-    image: "written-new",
-    label: "القرآن الكريم مكتوب",
-    testid: "link-quran-written",
-  },
-  {
-    href: "/prayer-times",
-    image: "prayer-new",
-    label: "مواقيت الصلاة",
-    testid: "link-prayer-times",
-  },
-  {
-    href: "/qibla",
-    image: "qibla-new",
-    label: "تحديد اتجاه القبلة",
-    testid: "link-qibla",
-  },
-  {
-    href: "/duas",
-    image: "duas-new",
-    label: "الدعاء",
-    testid: "link-duas",
-  },
-  {
-    href: "/adhkar",
-    image: "adhkar-new",
-    label: "الأذكار",
-    testid: "link-adhkar",
-  },
-  {
-    href: "/tasbeeh",
-    image: "tasbeeh-new",
-    label: "التسابيح",
-    testid: "link-tasbeeh",
-  },
+  { href: "/illuminated-book", icon: "illuminated", title: "الكتاب المضيئ", subtitle: "اسأل واعرف وتعلم", testid: "link-illuminated-book" },
+  { href: "/quran-audio", icon: "offline", title: "القرآن الكريم مرتل بدون نت", subtitle: "تلاوة مرتلة وبدون حاجة للإنترنت", testid: "link-quran-audio" },
+  { href: "/quran-tajweed", icon: "tajweed", title: "القرآن الكريم مجود", subtitle: "تلاوة بالتجويد والأحكام", testid: "link-quran-tajweed" },
+  { href: "/asma-husna", icon: "asma", title: "أسماء الله الحسنى", subtitle: "شرح ومعاني أسماء الله", testid: "link-asma-husna" },
+  { href: "/hadith", icon: "hadith", title: "الأحاديث النبوية الشريفة", subtitle: "أحاديث صحيحة من السيرة النبوية", testid: "link-hadith" },
+  { href: "/quran-written", icon: "written", title: "القرآن الكريم مكتوب", subtitle: "النص الكامل للمصحف الشريف", testid: "link-quran-written" },
+  { href: "/prayer-times", icon: "prayer", title: "مواقيت الصلاة", subtitle: "الأوقات الدقيقة بناءً على موقعك", testid: "link-prayer-times" },
+  { href: "/qibla", icon: "qibla", title: "تحديد اتجاه القبلة", subtitle: "تحديد القبلة بدقة سهلة", testid: "link-qibla" },
+  { href: "/duas", icon: "duas", title: "الدعاء", subtitle: "أدعية مستجابة للمناسبات", testid: "link-duas" },
+  { href: "/adhkar", icon: "adhkar", title: "الأذكار", subtitle: "أذكار الصباح والمساء واليومية", testid: "link-adhkar" },
+  { href: "/tasbeeh", icon: "tasbeeh", title: "التسابيح", subtitle: "سبحان الله والحمد لله", testid: "link-tasbeeh" },
 ] as const;
 
 export default function Home() {
@@ -89,27 +40,22 @@ export default function Home() {
           aria-hidden="true"
         />
         <nav className="home-button-stack" aria-label="أقسام التطبيق">
-              <Link
-                href="/illuminated-book"
-                className="home-image-button"
-                data-testid="link-illuminated-book"
-                aria-label="الكتاب المضيئ"
-              >
-                <img src={illuminatedBookAsset.url} alt="الكتاب المضيئ — اسأل واعرف وتعلم" draggable={false} />
-              </Link>
           {homeButtons.map((button) => (
             <Link
               key={button.href}
               href={button.href}
-              className="home-image-button"
+              className="home-card"
               data-testid={button.testid}
-              aria-label={button.label}
+              aria-label={button.title}
             >
-              <img
-                src={buttonAsset(button.image)}
-                alt={button.label}
-                draggable={false}
-              />
+              <img className="home-card-icon" src={iconAsset(button.icon)} alt="" aria-hidden="true" draggable={false} />
+              <span className="home-card-text">
+                <span className="home-card-title">{button.title}</span>
+                <span className="home-card-subtitle">{button.subtitle}</span>
+              </span>
+              <span className="home-card-chevron" aria-hidden="true">
+                <ChevronLeft />
+              </span>
             </Link>
           ))}
           <Link href="/privacy" className="block py-2 text-center text-sm text-muted-foreground underline" data-testid="link-privacy">
