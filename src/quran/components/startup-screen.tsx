@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import startupImage from "@/assets/quran-startup.jpg.asset.json";
+import splashArt from "@/assets/splash-art.jpg";
+import splashLoader from "@/assets/splash-loader.png";
 
 /** Present in the initial HTML, including the offline SPA shell. */
 export function StartupScreen() {
@@ -28,9 +29,10 @@ export function StartupScreen() {
   if (ready) return null;
   return (
     <div className="startup-screen" role="status" aria-label="جارٍ فتح التطبيق">
+      <div className="startup-backdrop" style={{ backgroundImage: `url(${splashArt})` }} aria-hidden="true" />
       <div className="startup-art">
-        <img src={startupImage.url} alt="القرآن الكريم — Quran Kareem" fetchPriority="high" />
-        <span className="startup-spinner" aria-hidden="true" />
+        <img src={splashArt} alt="محمد صديق المنشاوي — تطبيق تقوى القلوب" fetchPriority="high" />
+        <img className="startup-loader" src={splashLoader} alt="" aria-hidden="true" />
       </div>
     </div>
   );
