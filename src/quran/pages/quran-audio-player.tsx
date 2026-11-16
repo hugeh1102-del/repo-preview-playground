@@ -218,16 +218,16 @@ export default function QuranAudioPlayer() {
         {/* central control cluster */}
         <div className="flex items-center justify-center gap-3 sm:gap-5" dir="ltr">
           <button onClick={goPrev} disabled={!prevNum} aria-label="السورة السابقة"
-            className="w-10 h-10 rounded-full border border-border hover:text-primary hover:border-primary disabled:opacity-30 transition-all bg-[#1c542fe6] text-[#ffff]"
+            className="w-10 h-10 rounded-full border border-primary/25 bg-primary/90 text-primary-foreground hover:bg-primary disabled:opacity-30 transition-all"
             data-testid="button-prev-surah">
             <SkipBack className="w-5 h-5 mx-auto" />
           </button>
           <button onClick={() => seekBy(10)} aria-label="تقديم 10 ثوانٍ"
-            className="w-10 h-10 rounded-full hover:text-primary transition-all bg-[#1c542f] text-[#ffffff] border-t-[#ffff] border-r-[#ffff] border-b-[#ffff] border-l-[#ffff]"
+            className="w-10 h-10 rounded-full bg-primary text-primary-foreground hover:bg-primary/85 transition-all"
             data-testid="button-seek-backward">
             <span className="relative block">
               <RotateCw className="w-6 h-6 mx-auto" />
-              <span className="absolute inset-0 flex items-center justify-center text-[#f8f5f2] bg-[transparent] text-[10px] font-normal">10</span>
+              <span className="absolute inset-0 flex items-center justify-center text-primary-foreground text-[10px] font-normal">10</span>
             </span>
           </button>
           <button onClick={togglePlay} aria-label={playing ? "إيقاف التلاوة مؤقتاً" : "تشغيل التلاوة"}
@@ -241,15 +241,15 @@ export default function QuranAudioPlayer() {
             }
           </button>
           <button onClick={() => seekBy(-10)} aria-label="تأخير 10 ثوانٍ"
-            className="w-10 h-10 rounded-full hover:text-primary transition-all bg-[#1c542f] text-[#f8f5f2]"
+            className="w-10 h-10 rounded-full bg-primary text-primary-foreground hover:bg-primary/85 transition-all"
             data-testid="button-seek-forward">
             <span className="relative block">
               <RotateCcw className="w-6 h-6 mx-auto" />
-              <span className="absolute inset-0 flex items-center justify-center text-[10px] font-normal text-[#f8f5f2] border-t-[#f8f5f2] border-r-[#f8f5f2] border-b-[#f8f5f2] border-l-[#f8f5f2]">10</span>
+              <span className="absolute inset-0 flex items-center justify-center text-[10px] font-normal text-primary-foreground">10</span>
             </span>
           </button>
           <button onClick={goNext} disabled={!nextNum} aria-label="السورة التالية"
-            className="w-10 h-10 rounded-full border border-border hover:text-primary hover:border-primary disabled:opacity-30 transition-all bg-[#1c542fe6] text-[#ffff]"
+            className="w-10 h-10 rounded-full border border-primary/25 bg-primary/90 text-primary-foreground hover:bg-primary disabled:opacity-30 transition-all"
             data-testid="button-next-surah">
             <SkipForward className="w-5 h-5 mx-auto" />
           </button>
