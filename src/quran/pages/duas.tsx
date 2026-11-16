@@ -246,7 +246,7 @@ export default function Duas() {
           <h1 className="font-serif text-primary font-bold text-[34px]">الدعاء</h1>
           <p className="font-sans text-muted-foreground text-[14px]">{total} دعاء في {categories.length + standaloneDuas.length} قسمًا</p>
         </div>
-        <Link href="/favorites?type=dua" className="text-muted-foreground hover:text-red-500 transition-colors" data-testid="link-favorites" aria-label="المفضلة">
+        <Link href="/favorites?type=dua" className="text-muted-foreground hover:text-accent transition-colors" data-testid="link-favorites" aria-label="المفضلة">
           <Heart className="w-6 h-6" />
         </Link>
       </div>

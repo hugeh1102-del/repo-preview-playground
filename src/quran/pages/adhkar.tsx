@@ -28,7 +28,7 @@ export default function Adhkar() {
           <ChevronRight className="w-6 h-6" />
         </Link>
         <h1 className="font-serif text-primary font-bold text-[38px] flex-1">الأذكار</h1>
-        <Link href="/favorites?type=dhikr" className="text-muted-foreground hover:text-red-500 transition-colors" data-testid="link-favorites" aria-label="المفضلة">
+        <Link href="/favorites?type=dhikr" className="text-muted-foreground hover:text-accent transition-colors" data-testid="link-favorites" aria-label="المفضلة">
           <Heart className="w-6 h-6" />
         </Link>
       </div>

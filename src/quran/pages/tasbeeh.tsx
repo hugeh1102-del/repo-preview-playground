@@ -143,7 +143,7 @@ export default function Tasbeeh() {
           <h1 className="font-serif text-primary font-bold text-[30px]">التسابيح</h1>
           <p className="font-sans text-muted-foreground text-[14px] font-bold">{totalCompleted} مكتمل من {tasbeehList.length}</p>
         </div>
-        <Link href="/favorites?type=tasbeeh" className="text-muted-foreground hover:text-red-500 transition-colors" data-testid="link-favorites" aria-label="المفضلة">
+        <Link href="/favorites?type=tasbeeh" className="text-muted-foreground hover:text-accent transition-colors" data-testid="link-favorites" aria-label="المفضلة">
           <Heart className="w-6 h-6" />
         </Link>
       </div>

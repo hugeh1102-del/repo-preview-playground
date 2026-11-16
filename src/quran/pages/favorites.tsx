@@ -67,7 +67,7 @@ export default function Favorites() {
                   aria-label="إزالة من المفضلة"
                   data-testid={`button-remove-favorite-${item.key}`}
                   onClick={() => remove(item.key)}
-                  className="p-2 rounded-full text-muted-foreground hover:text-red-500 transition-colors flex-shrink-0"
+                  className="p-2 rounded-full text-muted-foreground hover:text-destructive transition-colors flex-shrink-0"
                 >
                   <Trash2 className="w-5 h-5" />
                 </button>

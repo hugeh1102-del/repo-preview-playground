@@ -15,10 +15,10 @@ export function FavoriteButton({ item, className = "" }: { item: FavoriteItem; c
         toggle(item);
       }}
       className={`p-2 rounded-full transition-colors ${
-        active ? "text-red-500" : "text-muted-foreground hover:text-red-500"
+        active ? "text-accent" : "text-muted-foreground hover:text-accent"
       } ${className}`}
     >
-      <Heart className={`w-5 h-5 ${active ? "fill-red-500" : ""}`} />
+      <Heart className={`w-5 h-5 ${active ? "fill-accent" : ""}`} />
     </button>
   );
 }
