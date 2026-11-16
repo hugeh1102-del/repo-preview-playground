@@ -1,0 +1,18 @@
+{
+  "source": "github/hamza23557-ctrl/are-they-free-now",
+  "source_commit": "44a2c08d34755250d4083284e36f8c4e707bb6c6",
+  "capabilities": [
+    { "capability": "application code and routes", "source": "public GitHub repository at the recorded commit", "outcome": "migrate", "status": "verified", "next_action": "None" },
+    { "capability": "database schema", "source": "No application database schema, table definitions, or migrations in the source; auth scaffolding is unused", "outcome": "not detected", "status": "verified", "next_action": "None" },
+    { "capability": "application records", "source": "Bundled Quran text and metadata plus audio, hadith, and app media", "outcome": "migrate", "status": "verified", "next_action": "None; Quran list and Al-Fatiha were read from bundled data" },
+    { "capability": "authentication identities", "source": "Generated auth client and middleware only; no user export or active auth workflow found", "outcome": "not detected", "status": "verified", "next_action": "None" },
+    { "capability": "authorization", "source": "No role or access-control rules found", "outcome": "not detected", "status": "verified", "next_action": "None" },
+    { "capability": "uploaded file bytes", "source": "Bundled static artwork, audio, video, and reference material", "outcome": "migrate", "status": "verified", "next_action": "Core page images and the question-page video loaded in preview" },
+    { "capability": "external providers", "source": "Aladhan prayer times, Google AdMob for the native Android app, and Lovable AI Gateway", "outcome": "preserve", "status": "partially verified", "next_action": "AI answers were verified; prayer-time geolocation and native Android ads require device/location testing" },
+    { "capability": "public endpoints and callbacks", "source": "No custom public API routes, webhooks, or OAuth callbacks detected", "outcome": "not detected", "status": "verified", "next_action": "None" },
+    { "capability": "schedules", "source": "Local device reminders", "outcome": "migrate", "status": "partially verified", "next_action": "Android notifications require testing on an Android device" },
+    { "capability": "secrets", "source": "No credential values imported; provisioned LOVABLE_API_KEY is used server-side for AI", "outcome": "preserve", "status": "verified", "next_action": "AI answer succeeded in the preview without exposing a key" },
+    { "capability": "cutover", "source": "No published production URL provided; source repository includes a live URL in README", "outcome": "not requested", "status": "pending", "next_action": "No cutover requested" },
+    { "capability": "verification", "source": "Lovable preview", "outcome": "verify", "status": "verified", "next_action": "Build OK; responsive home, Quran list and Al-Fatiha reader, and Arabic answer with 7 references verified; 19 tests passed" }
+  ]
+}
