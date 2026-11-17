@@ -6,6 +6,7 @@ import { useFavorites } from "@/quran/hooks/useFavorites";
 import { Skeleton } from "@/quran/components/ui/skeleton";
 import { OfflineDownloadButton } from "@/quran/components/offline-download-button";
 import { getCachedAudioObjectUrl } from "@/quran/lib/offline-audio";
+import { useStopOnAppExit } from "@/quran/hooks/useStopOnAppExit";
 
 let _autoPlayOnMount = false;
 
@@ -21,6 +22,7 @@ export default function QuranTajweedPlayer() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [buffering, setBuffering] = useState(false);
+  useStopOnAppExit(audioRef, () => { setPlaying(false); setBuffering(false); });
   const [playMode, setPlayMode] = useState<"off" | "auto" | "shuffle" | "repeat">("auto");
 
   const audioUrl = `https://server10.mp3quran.net/minsh/Almusshaf-Al-Mojawwad/${number.toString().padStart(3, "0")}.mp3`;
