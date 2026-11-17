@@ -1,9 +1,8 @@
-// @vitest-environment node
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 const APP_ID = "ca-app-pub-4072506919111365~3383451970";
-const read = (p: string) => readFileSync(new URL(`../../${p}`, import.meta.url), "utf8");
+const read = (p: string) => readFileSync(`${process.cwd()}/${p}`, "utf8");
 
 describe("Android AdMob setup (app crashes on launch without it)", () => {
   it("manifest declares the AdMob application id entry", () => {
