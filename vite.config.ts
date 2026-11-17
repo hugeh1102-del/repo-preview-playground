@@ -11,7 +11,7 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 // Android (Capacitor) builds load the app offline from files, so they need a static
 // index.html shell. Web builds keep normal server rendering.
-const capacitorBuild = process.env.CAPACITOR_BUILD === "1";
+const capacitorBuild = process.env["CAPACITOR_BUILD"] === "1";
 
 export default defineConfig({
   tanstackStart: {
