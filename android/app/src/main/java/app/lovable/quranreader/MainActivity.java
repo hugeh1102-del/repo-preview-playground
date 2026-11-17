@@ -92,11 +92,8 @@ public class MainActivity extends BridgeActivity {
         @Override public void run() {
             if (isFinishing() || isDestroyed() || startupOverlay == null) return;
             // Never keep the user stuck on the startup screen.
-            if (System.currentTimeMillis() - startedAt > MAX_WAIT_MS || getBridge() == null || getBridge().getWebView() == null) {
-                if (System.currentTimeMillis() - startedAt > MAX_WAIT_MS) { hideStartup(); return; }
-                startupHandler.postDelayed(this, 100);
-                return;
-            }
+            if (System.currentTimeMillis() - startedAt > MAX_WAIT_MS) { hideStartup(); return; }
+            if (getBridge() == null || getBridge().getWebView() == null) { startupHandler.postDelayed(this, 100); return; }
             getBridge().getWebView().evaluateJavascript(
                 "document.documentElement.dataset.appReady === 'true'",
                 result -> {
