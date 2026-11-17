@@ -4,6 +4,7 @@ import com.getcapacitor.BridgeActivity;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Gravity;
@@ -102,6 +103,24 @@ public class MainActivity extends BridgeActivity {
                 });
         }
     };
+
+    /**
+     * Leaving the app (home, recents, back, switching apps) stops the recitation.
+     * Locking the phone also stops the activity, but the screen is no longer interactive
+     * then, so the recitation keeps playing.
+     */
+    @Override
+    public void onStop() {
+        PowerManager power = (PowerManager) getSystemService(POWER_SERVICE);
+        boolean screenOn = power == null || power.isInteractive();
+        if (screenOn && getBridge() != null && getBridge().getWebView() != null) {
+            getBridge().getWebView().evaluateJavascript(
+                "window.dispatchEvent(new Event('quran:app-exit'));"
+                    + "document.querySelectorAll('audio,video').forEach(function(m){m.pause();});",
+                null);
+        }
+        super.onStop();
+    }
 
     @Override public void onDestroy() {
         startupHandler.removeCallbacksAndMessages(null);
