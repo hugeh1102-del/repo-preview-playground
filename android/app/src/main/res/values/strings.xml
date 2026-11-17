@@ -4,4 +4,6 @@
     <string name="title_activity_main">تقوى القلوب</string>
     <string name="package_name">app.lovable.quranreader</string>
     <string name="custom_url_scheme">app.lovable.quranreader</string>
+    <!-- AdMob publisher app ID (same value as capacitor.config.ts plugins.Admob.appID). -->
+    <string name="admob_app_id" translatable="false">ca-app-pub-4072506919111365~3383451970</string>
 </resources>
