@@ -7,6 +7,7 @@ import { Skeleton } from "@/quran/components/ui/skeleton";
 import { OfflineDownloadButton } from "@/quran/components/offline-download-button";
 import { getCachedAudioObjectUrl, getLocalMurattalUrl, isSplitMurattal } from "@/quran/lib/offline-audio";
 import { getAyahMurattalUrl } from "@/quran/lib/quran-search";
+import { useStopOnAppExit } from "@/quran/hooks/useStopOnAppExit";
 import { Button } from "@/components/ui/button";
 import { Link as RouterLink } from "@tanstack/react-router";
 
@@ -28,6 +29,7 @@ export default function QuranAudioPlayer() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [buffering, setBuffering] = useState(false);
+  useStopOnAppExit(audioRef, () => { setPlaying(false); setBuffering(false); });
   const [audioError, setAudioError] = useState(false);
   const [playMode, setPlayMode] = useState<"off" | "auto" | "shuffle" | "repeat">("auto");
 
