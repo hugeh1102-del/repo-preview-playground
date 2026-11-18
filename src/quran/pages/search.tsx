@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
-import { Search as SearchIcon, BookOpen, Headphones, Loader2 } from "lucide-react";
+import { Search as SearchIcon, BookOpen, Headphones, Loader2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSurahList } from "@/quran/hooks/useSurahList";
 import { filterSurahs, filterAyahs, loadAyahCorpus, type AyahMatch } from "@/quran/lib/quran-search";
@@ -55,6 +55,15 @@ export default function Search() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-5 pb-6 pt-3" dir="rtl">
+      {/* زر الرجوع */}
+      <button 
+        onClick={() => window.history.back()}
+        className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors w-fit"
+      >
+        <ArrowRight className="h-4 w-4" />
+        <span>رجوع</span>
+      </button>
+
       <h1 className="font-serif text-3xl font-bold text-primary">البحث في القرآن</h1>
       <div className="grid grid-cols-2 gap-1 rounded-lg bg-muted p-1" role="tablist" aria-label="نوع البحث">
         {(["surah", "ayah"] as const).map((mode) => (
