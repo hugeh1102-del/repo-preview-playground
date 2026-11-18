@@ -29,6 +29,15 @@ function useAyahSearch(query: string) {
 function ResultActions({ surah, ayah }: { surah: number; ayah?: number }) {
   const search = ayah ? { ayah } : {};
   return (
+    <button 
+  onClick={() => window.history.back()}
+  className="flex items-center gap-1.5 px-3 py-1.5 mb-4 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors w-fit"
+>
+  <span>رجوع</span>
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+  </svg>
+</button>
     <div className="flex gap-2">
       <Button asChild variant="outline" size="sm" className="flex-1">
         <Link to="/quran-written/$number" params={{ number: String(surah) }} search={search}>
