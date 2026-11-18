@@ -1,19 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { AD_PACKAGES, QUESTION_COST, START_CREDITS, afterQuestion, canAsk, loadCredits, rewardFor, saveCredits } from "@/quran/lib/credits";
 import { adsAvailable, showRewarded } from "@/quran/lib/ads";
-import { useServerFn } from "@tanstack/react-start";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, Send, LoaderCircle, RotateCcw, ShieldCheck, SkipForward } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Button } from "@/quran/components/ui/button";
 import { Textarea } from "@/quran/components/ui/textarea";
-import { askIlluminatedBook } from "@/lib/illuminated-book.functions";
+import { askIlluminated } from "@/quran/lib/ask-illuminated";
 import videoAsset from "@/assets/video/illuminated-book-v2.mp4.asset.json";
 
 type Answer = { answer: string; references: { id: string; label: string; text: string }[] };
 
 export default function IlluminatedBook() {
-  const ask = useServerFn(askIlluminatedBook);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [question, setQuestion] = useState("");
   const [submitted, setSubmitted] = useState("");
@@ -57,7 +55,7 @@ export default function IlluminatedBook() {
       v.play().catch(() => setVideoDone(true));
     } else setVideoDone(true);
     try {
-      const result = await ask({ data: { question: question.trim() } });
+      const result = await askIlluminated(question.trim());
       if (result.ok) { setAnswer(result); setCredits(c => { const n = afterQuestion(c); saveCredits(n); return n; }); }
       else { setError(result.error); resetVideo(); }
     } catch { setError("تعذر الاتصال بخدمة الإجابات. حاول لاحقًا."); resetVideo(); }
@@ -91,7 +89,7 @@ export default function IlluminatedBook() {
         <>
           <div className="flex flex-1 flex-col items-center justify-start gap-5 py-7 sm:py-10">
             <div className="relative w-full max-w-xl">
-              <video ref={videoRef} src={videoAsset.url} playsInline preload="auto" disablePictureInPicture controlsList="nodownload noplaybackrate" onEnded={() => setVideoDone(true)} onError={() => setVideoDone(true)} onContextMenu={e => e.preventDefault()} className="pointer-events-none aspect-video w-full rounded-lg bg-muted" aria-label="فيديو الكتاب المضيئ" />
+              <video ref={videoRef} src={videoAsset.url} poster="/assets/video/illuminated-book-poster.jpg" playsInline preload="auto" disablePictureInPicture controlsList="nodownload noplaybackrate" onEnded={() => setVideoDone(true)} onError={() => setVideoDone(true)} onContextMenu={e => e.preventDefault()} className="pointer-events-none aspect-video w-full rounded-lg bg-muted" aria-label="فيديو الكتاب المضيئ" />
               {playing && !videoDone && <Button type="button" size="sm" variant="secondary" className="absolute bottom-3 left-3" onClick={skip}><SkipForward />تخطي</Button>}
             </div>
             {question.trim().length > 0 && question.trim().length < 3 && !busy && <p className="text-sm text-muted-foreground">اكتب سؤالًا من ثلاثة أحرف على الأقل.</p>}

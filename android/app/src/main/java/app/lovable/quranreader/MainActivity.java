@@ -36,6 +36,8 @@ public class MainActivity extends BridgeActivity {
         startupOverlay = new FrameLayout(this);
         startupOverlay.setBackgroundColor(getColor(R.color.splash_background));
         startupOverlay.setClickable(true);
+        // Arabic (right-to-left) layout would mirror the margins and move the dot ring off its spot.
+        startupOverlay.setLayoutDirection(android.view.View.LAYOUT_DIRECTION_LTR);
 
         ImageView backdrop = new ImageView(this);
         backdrop.setImageResource(R.drawable.splash_backdrop);
@@ -45,13 +47,13 @@ public class MainActivity extends BridgeActivity {
         ImageView artwork = new ImageView(this);
         artwork.setImageResource(R.drawable.splash);
         artwork.setScaleType(ImageView.ScaleType.FIT_XY);
-        FrameLayout.LayoutParams artPos = new FrameLayout.LayoutParams(0, 0, Gravity.TOP | Gravity.START);
+        FrameLayout.LayoutParams artPos = new FrameLayout.LayoutParams(0, 0, Gravity.TOP | Gravity.LEFT);
         startupOverlay.addView(artwork, artPos);
 
         ImageView ring = new ImageView(this);
         ring.setImageResource(R.drawable.splash_loader);
         ring.setScaleType(ImageView.ScaleType.FIT_XY);
-        FrameLayout.LayoutParams ringPos = new FrameLayout.LayoutParams(0, 0, Gravity.TOP | Gravity.START);
+        FrameLayout.LayoutParams ringPos = new FrameLayout.LayoutParams(0, 0, Gravity.TOP | Gravity.LEFT);
         startupOverlay.addView(ring, ringPos);
 
         startupOverlay.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> {

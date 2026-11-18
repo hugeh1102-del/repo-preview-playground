@@ -124,6 +124,12 @@ export default function QuranTajweedPlayer() {
     setCurrentTime(nextTime);
   }
 
+  /** Browsers refine the length of a recitation while it loads; always show the latest real value. */
+  function syncDuration() {
+    const d = audioRef.current?.duration;
+    setDuration(d && Number.isFinite(d) ? d : 0);
+  }
+
   function formatTime(s: number) {
     if (!isFinite(s)) return "0:00:00";
     const h = Math.floor(s / 3600);
@@ -179,7 +185,7 @@ export default function QuranTajweedPlayer() {
             }}
             className="w-full h-2 accent-primary cursor-pointer" data-testid="input-tajweed-seek" />
           <div className="flex justify-between font-sans text-xs text-muted-foreground" dir="ltr">
-            <span>{formatTime(currentTime)}</span>
+            <span>{formatTime(duration ? Math.min(currentTime, duration) : currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
         </div>
@@ -254,7 +260,8 @@ export default function QuranTajweedPlayer() {
 
       <audio ref={audioRef} src={audioSourceUrl}
         onTimeUpdate={() => { if (audioRef.current) setCurrentTime(audioRef.current.currentTime); }}
-        onLoadedMetadata={() => { if (audioRef.current) setDuration(audioRef.current.duration); }}
+        onLoadedMetadata={syncDuration}
+        onDurationChange={syncDuration}
         onEnded={handleEnded}
         onWaiting={() => setBuffering(true)}
         onPlaying={() => setBuffering(false)}

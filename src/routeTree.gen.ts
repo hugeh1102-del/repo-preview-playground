@@ -33,6 +33,7 @@ import { Route as QuranTajweedNumberRouteImport } from './routes/quran-tajweed/$
 import { Route as QuranWrittenIndexRouteImport } from './routes/quran-written/index'
 import { Route as QuranWrittenNumberRouteImport } from './routes/quran-written/$number'
 import { Route as SurahNumberRouteImport } from './routes/surah/$number'
+import { Route as ApiPublicIlluminatedBookRouteImport } from './routes/api/public/illuminated-book'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -154,6 +155,12 @@ const SurahNumberRoute = SurahNumberRouteImport.update({
   path: '/surah/$number',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicIlluminatedBookRoute =
+  ApiPublicIlluminatedBookRouteImport.update({
+    id: '/api/public/illuminated-book',
+    path: '/api/public/illuminated-book',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -180,6 +187,7 @@ export interface FileRoutesByFullPath {
   '/quran-audio/': typeof QuranAudioIndexRoute
   '/quran-tajweed/': typeof QuranTajweedIndexRoute
   '/quran-written/': typeof QuranWrittenIndexRoute
+  '/api/public/illuminated-book': typeof ApiPublicIlluminatedBookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -206,6 +214,7 @@ export interface FileRoutesByTo {
   '/quran-audio': typeof QuranAudioIndexRoute
   '/quran-tajweed': typeof QuranTajweedIndexRoute
   '/quran-written': typeof QuranWrittenIndexRoute
+  '/api/public/illuminated-book': typeof ApiPublicIlluminatedBookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -233,6 +242,7 @@ export interface FileRoutesById {
   '/quran-audio/': typeof QuranAudioIndexRoute
   '/quran-tajweed/': typeof QuranTajweedIndexRoute
   '/quran-written/': typeof QuranWrittenIndexRoute
+  '/api/public/illuminated-book': typeof ApiPublicIlluminatedBookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -261,6 +271,7 @@ export interface FileRouteTypes {
     | '/quran-audio/'
     | '/quran-tajweed/'
     | '/quran-written/'
+    | '/api/public/illuminated-book'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -287,6 +298,7 @@ export interface FileRouteTypes {
     | '/quran-audio'
     | '/quran-tajweed'
     | '/quran-written'
+    | '/api/public/illuminated-book'
   id:
     | '__root__'
     | '/'
@@ -313,6 +325,7 @@ export interface FileRouteTypes {
     | '/quran-audio/'
     | '/quran-tajweed/'
     | '/quran-written/'
+    | '/api/public/illuminated-book'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -340,6 +353,7 @@ export interface RootRouteChildren {
   QuranAudioIndexRoute: typeof QuranAudioIndexRoute
   QuranTajweedIndexRoute: typeof QuranTajweedIndexRoute
   QuranWrittenIndexRoute: typeof QuranWrittenIndexRoute
+  ApiPublicIlluminatedBookRoute: typeof ApiPublicIlluminatedBookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -512,6 +526,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SurahNumberRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/illuminated-book': {
+      id: '/api/public/illuminated-book'
+      path: '/api/public/illuminated-book'
+      fullPath: '/api/public/illuminated-book'
+      preLoaderRoute: typeof ApiPublicIlluminatedBookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -540,6 +561,7 @@ const rootRouteChildren: RootRouteChildren = {
   QuranAudioIndexRoute: QuranAudioIndexRoute,
   QuranTajweedIndexRoute: QuranTajweedIndexRoute,
   QuranWrittenIndexRoute: QuranWrittenIndexRoute,
+  ApiPublicIlluminatedBookRoute: ApiPublicIlluminatedBookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -6,4 +6,8 @@
 - [x] Commit the final dependency lockfile update.
 - [x] Apply the supplied logo and splash artwork, including the animated loading ring and icon-only translucent bottom navigation.
 - [x] Fix Android launch crash (missing AdMob app ID), offline start page, broken add-on paths, icon and startup screen.
-- [ ] Native APK compile/run on a device — needs Android Studio on the user's computer.
+- [ ] Native APK compile/run on a device — needs Android Studio on the user's computer.- [x] Android startup screen: keep the spinning dot ring in its exact place (right-to-left layout moved it).
+- [x] Home page base color: calm soft white.
+- [x] Recitation timer: correct total length and elapsed time.
+- [x] Illuminated Book: show the video picture as soon as the page opens.
+- [x] Illuminated Book answers inside the Android app.

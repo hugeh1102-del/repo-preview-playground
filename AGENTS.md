@@ -35,4 +35,6 @@ use the editor.
 - Keep Android launcher icon and splash assets synchronized with the supplied brand artwork across all density variants, so the installed app matches the web startup experience.
 - Android builds (`CAPACITOR_BUILD=1`, via `cap:sync`) switch TanStack Start to SPA mode with a prerendered `index.html`, because the APK loads files offline and has no server; web builds stay server-rendered.
 - The AdMob app ID must live in `android/app/src/main/AndroidManifest.xml` (via `@string/admob_app_id`) as well as `capacitor.config.ts`, because Google Mobile Ads crashes at launch without the manifest entry.
+- Illuminated Book answers go through `/api/public/illuminated-book` (CORS limited to the Capacitor local origins); the Android app calls the stable published URL because the offline APK has no server, so the site must be republished after answer-service changes.
+- Bundled murattal MP3s are VBR, so each file (and each split surah, before splitting) must carry a Xing header with TOC; without it players misreport total length and elapsed time.
 
