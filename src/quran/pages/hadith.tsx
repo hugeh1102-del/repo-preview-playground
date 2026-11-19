@@ -2,6 +2,36 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "@/quran/wouter-shim";
 import { ChevronRight, ChevronLeft, BookOpen, Download, Check, Heart, Star } from "lucide-react";
 import { Skeleton } from "@/quran/components/ui/skeleton";
+import { Capacitor } from "@capacitor/core";
+
+const HADITH_CACHE = "quran-hadith-v1";
+/** Inside the Android app the hadith books ship with the app, so they are read straight from it. */
+const booksAreBundled = () => Capacitor.isNativePlatform();
+
+async function openHadithCache(): Promise<Cache | null> {
+  if (booksAreBundled() || typeof window === "undefined" || !("caches" in window)) return null;
+  try { return await window.caches.open(HADITH_CACHE); } catch { return null; }
+}
+
+/** Loads one hadith book. Saving a copy for offline use is best-effort and never blocks reading. */
+async function loadHadithBook(url: string): Promise<any> {
+  const cache = await openHadithCache();
+  if (cache) {
+    try {
+      const hit = await cache.match(url);
+      if (hit) return await hit.json();
+    } catch { /* fall back to a fresh read */ }
+  }
+  let response: Response | null = null;
+  for (let attempt = 0; attempt < 2 && !response?.ok; attempt++) {
+    try { response = await fetch(url); } catch { response = null; }
+  }
+  if (!response?.ok) throw new Error("hadith book unavailable");
+  if (cache) {
+    try { await cache.put(url, response.clone()); } catch { /* storage full or unavailable */ }
+  }
+  return response.json();
+}
 
 interface HadithEntry {
   hadithnumber: number;
@@ -128,10 +158,7 @@ export function HadithFavorites() {
       try {
         const neededBooks = BOOKS.filter((book) => keys.some((key) => key.startsWith(`${book.id}:`)));
         const results = await Promise.all(neededBooks.map(async (book) => {
-          const url = `/data/hadith/${book.apiKey}.json`;
-          const response = await fetch(url);
-          if (!response.ok) throw new Error();
-          const data = await response.json();
+          const data = await loadHadithBook(`/data/hadith/${book.apiKey}.json`);
           return (data.hadiths ?? data.hadith ?? []).map((hadith: any) => ({
             hadithnumber: hadith.hadithnumber,
             text: hadith.text ?? hadith.arab ?? "",
@@ -237,16 +264,8 @@ export function HadithReader() {
 
   useEffect(() => {
     setLoading(true); setError(false); setHadiths([]); setExpanded(null);
-    setSavedOffline(false);
-    const load = async () => {
-      const cache = "caches" in window ? await window.caches.open("quran-hadith-v1") : null;
-      const cached = cache ? await cache.match(hadithUrl) : null;
-      const response = cached ?? (await fetch(hadithUrl));
-      if (!response.ok) throw new Error();
-      if (!cached && cache) await cache.put(hadithUrl, response.clone());
-      return response.json();
-    };
-    load()
+    setSavedOffline(booksAreBundled());
+    loadHadithBook(hadithUrl)
       .then((data) => {
         const list: HadithEntry[] = (data.hadiths ?? data.hadith ?? [])
           .slice(0, 300)
@@ -258,8 +277,9 @@ export function HadithReader() {
   }, [bookId, hadithUrl]);
 
   async function saveHadithsOffline() {
+    if (booksAreBundled()) { setSavedOffline(true); return; }
     try {
-      const cache = await window.caches.open("quran-hadith-v1");
+      const cache = await window.caches.open(HADITH_CACHE);
       const response = await fetch(hadithUrl, { cache: "no-store" });
       if (!response.ok) throw new Error();
       await cache.put(hadithUrl, response.clone());

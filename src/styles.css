@@ -61,7 +61,7 @@
   --app-font-arabic: 'Cairo Variable', 'Cairo', sans-serif;
   --app-font-display: 'Marhey Variable', 'Marhey', 'Cairo Variable', sans-serif;
   --radius: 1.15rem;
-  --bottom-navigation-height: 52px;
+  --bottom-navigation-height: calc(min(86vw, 330px) * 0.4375);
   --bottom-navigation-space: calc(var(--bottom-navigation-height) + env(safe-area-inset-bottom, 0px));
   --navigation-shadow: 0 -3px 16px hsl(var(--foreground) / 0.08);
   --startup-background: #f4f0e7;
@@ -110,54 +110,79 @@
 }
 
 .bottom-navigation {
-  --nav-olive: #6b7a3f;
-  --nav-olive-deep: #3f4c1e;
+  /* Arch-shaped bar: cream band with a raised gold circle in the middle. */
+  --nav-width: min(86vw, 330px);
+  --nav-arch-top: hsl(44 60% 97% / 0.97);
+  --nav-arch-bottom: hsl(42 42% 90% / 0.97);
+  --nav-arch-edge: hsl(40 45% 72% / 0.85);
+  --nav-home: hsl(152 52% 24%);
+  --nav-book: hsl(34 45% 55%);
+  --nav-bell: hsl(14 52% 52%);
+  --nav-search: hsl(78 22% 38%);
+  --nav-gold-light: hsl(45 75% 86%);
+  --nav-gold: hsl(41 52% 62%);
+  --nav-gold-deep: hsl(38 46% 46%);
   position: fixed;
-  bottom: env(safe-area-inset-bottom, 0px);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 4px);
   left: 50%;
   transform: translateX(-50%);
   z-index: 1100;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  width: min(calc(100% - 64px), 360px);
-  height: var(--bottom-navigation-height);
-  margin-bottom: 8px;
-  padding: 5px 6px;
-  background: hsl(var(--background) / 0.42);
-  border: 1px solid hsl(var(--border) / 0.4);
-  border-radius: 22px;
-  box-shadow:
-    0 8px 20px hsl(60 20% 30% / 0.12),
-    inset 0 1px 0 hsl(0 0% 100% / 0.6);
-  backdrop-filter: blur(12px) saturate(1.2);
-  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  width: var(--nav-width);
+  aspect-ratio: 400 / 175;
+  pointer-events: none;
 }
-
-.bottom-navigation .bottom-navigation-item {
-  min-width: 0;
+.bottom-navigation-arch {
+  position: absolute;
+  inset: 0;
+  width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px 2px;
-  gap: 0;
-  color: var(--nav-olive);
-  white-space: normal;
-  text-align: center;
-  font-size: 10px;
-  line-height: 1.45;
-  border-radius: 16px;
+  overflow: visible;
+  filter: drop-shadow(0 6px 10px hsl(40 30% 30% / 0.18)) drop-shadow(0 1px 1px hsl(40 30% 30% / 0.12));
 }
-.bottom-navigation .bottom-navigation-item:hover { color: var(--nav-olive-deep); background: hsl(70 25% 60% / 0.12); }
-.bottom-navigation .bottom-navigation-item svg { flex: 0 0 auto; width: 18px; height: 18px; stroke-width: 1.9; color: inherit; }
-.bottom-navigation-item span { display: none; }
-.bottom-navigation .bottom-navigation-item--active {
-  color: var(--nav-olive-deep);
-  background: linear-gradient(180deg, hsl(66 30% 88% / 0.7), hsl(64 26% 80% / 0.7));
-  box-shadow: inset 0 1px 3px hsl(60 20% 40% / 0.18);
-  font-weight: 700;
+.bottom-navigation-arch-fill {
+  stroke: var(--nav-arch-edge);
+  stroke-width: 2.2;
+  pointer-events: visiblePainted;
 }
-.app-content { padding-bottom: 64px; }
+.bottom-navigation-arch-shine {
+  fill: none;
+  stroke: hsl(0 0% 100% / 0.7);
+  stroke-width: 1.4;
+  transform-origin: center;
+  clip-path: inset(0 0 55% 0);
+  pointer-events: none;
+}
+.bottom-navigation .bottom-navigation-item {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 14%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  pointer-events: auto;
+  outline: none;
+  transition: transform 160ms ease, background-color 160ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.bottom-navigation .bottom-navigation-item svg { width: 64%; height: 64%; stroke-width: 2.1; }
+.bottom-navigation .bottom-navigation-item:active { transform: translate(-50%, -50%) scale(0.92); }
+.bottom-navigation .bottom-navigation-item:focus-visible { box-shadow: 0 0 0 2px var(--nav-home); }
+.bottom-navigation-item--home { color: var(--nav-home); }
+.bottom-navigation-door { fill: var(--nav-arch-top); }
+.bottom-navigation-item--book { color: var(--nav-book); }
+.bottom-navigation-item--bell { color: var(--nav-bell); }
+.bottom-navigation-item--search { color: var(--nav-search); }
+.bottom-navigation .bottom-navigation-item--center {
+  width: 18.5%;
+  color: var(--nav-home);
+  background: radial-gradient(circle at 50% 35%, var(--nav-gold-light) 0%, var(--nav-gold) 62%, var(--nav-gold-deep) 100%);
+  border: 2px solid hsl(44 70% 90% / 0.95);
+  box-shadow: 0 4px 10px hsl(38 40% 30% / 0.28), inset 0 2px 4px hsl(0 0% 100% / 0.55), inset 0 -3px 6px hsl(36 45% 35% / 0.25);
+}
+.bottom-navigation .bottom-navigation-item--center svg { width: 56%; height: 56%; stroke-width: 2.4; }
+/* Room for the bottom banner ad (its real height is set by the ad code inside the app). */
+.app-content { padding-bottom: calc(24px + var(--ad-banner-height, 0px) + env(safe-area-inset-bottom, 0px)); }
 
 @layer base {
   * {
@@ -184,7 +209,7 @@
 }
 
 .quran-home-screen {
-  --quran-home-surface: #f9f8f4;
+  --quran-home-surface: #fdfdfb;
   position: relative;
   width: 100%;
   height: 100dvh;
@@ -262,7 +287,7 @@
   position: relative;
   right: auto;
   left: auto;
-  padding: 0 clamp(14px, 6vw, 48px) calc(clamp(150px, 22dvh, 240px) + var(--bottom-navigation-space) + 8px);
+  padding: 0 clamp(26px, 11vw, 84px) calc(clamp(150px, 22dvh, 240px) + var(--bottom-navigation-space) + 8px);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-content: start;

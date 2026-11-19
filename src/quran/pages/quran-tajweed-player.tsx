@@ -26,7 +26,10 @@ export default function QuranTajweedPlayer() {
   const [playMode, setPlayMode] = useState<"off" | "auto" | "shuffle" | "repeat">("auto");
 
   const audioUrl = `https://server10.mp3quran.net/minsh/Almusshaf-Al-Mojawwad/${number.toString().padStart(3, "0")}.mp3`;
-  const [audioSourceUrl, setAudioSourceUrl] = useState(audioUrl);
+  /* The source is tagged with its surah so a stale address from the previous surah is never played. */
+  const [source, setSource] = useState({ number, url: audioUrl });
+  const audioSourceUrl = source.url;
+  const loadedNumberRef = useRef<number | null>(null);
   const sourceObjectUrlRef = useRef<string | null>(null);
 
   const prevNum  = number > 1   ? number - 1 : null;
@@ -36,7 +39,7 @@ export default function QuranTajweedPlayer() {
 
   useEffect(() => {
     let active = true;
-    setAudioSourceUrl(audioUrl);
+    setSource({ number, url: audioUrl });
 
     void getCachedAudioObjectUrl("tajweed", number)
       .then((cachedUrl) => {
@@ -47,7 +50,7 @@ export default function QuranTajweedPlayer() {
         }
         if (sourceObjectUrlRef.current) URL.revokeObjectURL(sourceObjectUrlRef.current);
         sourceObjectUrlRef.current = cachedUrl;
-        setAudioSourceUrl(cachedUrl);
+        setSource({ number, url: cachedUrl });
       })
       .catch(() => {});
 
@@ -60,9 +63,13 @@ export default function QuranTajweedPlayer() {
     };
   }, [number]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  /* load the surah's recitation; keep playing when the next surah was started automatically */
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || !audioSourceUrl || source.number !== number) return;
+    const keepPlaying = _autoPlayOnMount || (loadedNumberRef.current === number && !audio.paused);
+    _autoPlayOnMount = false;
+    loadedNumberRef.current = number;
     audio.pause();
     audio.src = audioSourceUrl;
     audio.load();
@@ -70,11 +77,10 @@ export default function QuranTajweedPlayer() {
     setCurrentTime(0);
     setDuration(0);
     setBuffering(false);
-    if (_autoPlayOnMount && audioRef.current) {
-      _autoPlayOnMount = false;
-      audioRef.current.play().then(() => setPlaying(true)).catch(() => {});
+    if (keepPlaying) {
+      audio.play().then(() => setPlaying(true)).catch(() => {});
     }
-  }, [number, audioSourceUrl]);
+  }, [number, audioSourceUrl, source.number]);
 
   function togglePlay() {
     if (!audioRef.current) return;

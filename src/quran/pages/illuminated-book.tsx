@@ -28,8 +28,8 @@ export default function IlluminatedBook() {
     if (!adsAvailable()) { setAdMsg("الإعلانات تعمل داخل تطبيق الأندرويد فقط."); return; }
     setAdBusy(true); setAdMsg("");
     for (let i = 1; i <= count; i++) {
-      if (!(await showRewarded())) { setAdBusy(false); setAdMsg("لم يكتمل الإعلان، فلم يُضف رصيد. حاول مرة أخرى."); return; }
-      if (i < count) setAdMsg(`شاهدت ${i} من ${count}…`);
+      if (i > 1) setAdMsg(`شاهدت ${i - 1} من ${count}… جارٍ تحميل الإعلان التالي`);
+      if (!(await showRewarded())) { setAdBusy(false); setAdMsg("لم يكتمل الإعلان أو لا يتوفر إعلان الآن، فلم يُضف رصيد. تأكد من الاتصال بالإنترنت وحاول مرة أخرى."); return; }
     }
     setCredits(c => { const n = c + rewardFor(count); saveCredits(n); return n; });
     setAdBusy(false); setAdMsg(`أُضيف ${rewardFor(count)} كريدت إلى رصيدك.`); setError("");
@@ -105,7 +105,7 @@ export default function IlluminatedBook() {
             )}
             {false && <p role="status" className="flex items-center gap-2 text-base font-semibold text-primary"><LoaderCircle className="size-4 animate-spin motion-reduce:animate-none" />جاري إعداد الإجابة…</p>}
           </div>
-          <form onSubmit={submit} className="sticky bottom-0 border-t bg-background pb-4 pt-5">
+          <form onSubmit={submit} className="sticky bottom-[var(--ad-banner-height,0px)] border-t bg-background pb-4 pt-5">
             <label htmlFor="religious-question" className="mb-3 block text-sm font-semibold">ما سؤالك؟</label>
             <div className="rounded-lg border border-input bg-card p-3 focus-within:ring-1 focus-within:ring-ring">
               <Textarea id="religious-question" value={question} onChange={e => setQuestion(e.target.value)} placeholder="اكتب سؤالك عن القرآن أو التفسير أو الشريعة أو التاريخ الإسلامي…" maxLength={2000} disabled={busy} className="min-h-24 resize-none border-0 bg-transparent p-1 shadow-none focus-visible:ring-0" />

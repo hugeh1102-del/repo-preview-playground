@@ -34,7 +34,10 @@ export default function QuranAudioPlayer() {
   const [playMode, setPlayMode] = useState<"off" | "auto" | "shuffle" | "repeat">("auto");
 
   const audioUrl = targetAyah ? getAyahMurattalUrl(number, targetAyah) : isSplitMurattal(number) ? "" : getLocalMurattalUrl(number);
-  const [audioSourceUrl, setAudioSourceUrl] = useState(audioUrl);
+  /* The source is tagged with its surah so a stale address from the previous surah is never played. */
+  const [source, setSource] = useState({ number, url: audioUrl });
+  const audioSourceUrl = source.url;
+  const loadedNumberRef = useRef<number | null>(null);
   const sourceObjectUrlRef = useRef<string | null>(null);
 
   const prevNum  = number > 1   ? number - 1 : null;
@@ -44,7 +47,7 @@ export default function QuranAudioPlayer() {
 
   useEffect(() => {
     let active = true;
-    setAudioSourceUrl(audioUrl);
+    setSource({ number, url: audioUrl });
     if (targetAyah) return;
 
     void getCachedAudioObjectUrl("murattal", number)
@@ -56,7 +59,7 @@ export default function QuranAudioPlayer() {
         }
         if (sourceObjectUrlRef.current) URL.revokeObjectURL(sourceObjectUrlRef.current);
         sourceObjectUrlRef.current = cachedUrl;
-        setAudioSourceUrl(cachedUrl);
+        setSource({ number, url: cachedUrl });
       })
       .catch(() => {});
 
@@ -69,10 +72,14 @@ export default function QuranAudioPlayer() {
     };
   }, [number, audioUrl, targetAyah]);
 
-  /* reset + optional auto-start when surah number changes */
+  /* load the surah's recitation; keep playing when the next surah was started automatically */
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio || !audioSourceUrl) return;
+    if (!audio || !audioSourceUrl || source.number !== number) return;
+    // Same surah switching to its saved offline copy: keep playing if it already was.
+    const keepPlaying = _autoPlayOnMount || (loadedNumberRef.current === number && !audio.paused);
+    _autoPlayOnMount = false;
+    loadedNumberRef.current = number;
     audio.pause();
     audio.src = audioSourceUrl;
     audio.load();
@@ -82,14 +89,13 @@ export default function QuranAudioPlayer() {
     setBuffering(false);
     setAudioError(false);
 
-    if (_autoPlayOnMount) {
-      _autoPlayOnMount = false;
+    if (keepPlaying) {
       setBuffering(true);
       audio.play()
         .then(() => { setPlaying(true); setBuffering(false); })
         .catch(() => { setBuffering(false); });
     }
-  }, [number, audioSourceUrl]);
+  }, [number, audioSourceUrl, source.number]);
 
   function togglePlay() {
     const audio = audioRef.current;

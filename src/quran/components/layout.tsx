@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from "react";
 import { useLocation } from "@/quran/wouter-shim";
 import { onPageChange, setBanner } from "@/quran/lib/ads";
+import { showsBanner } from "@/quran/lib/credits";
 import { BottomNavigation } from "./bottom-navigation";
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -8,9 +9,9 @@ export function Layout({ children }: { children: ReactNode }) {
   const isHome = location === "/";
 
   useEffect(() => {
-    void setBanner(!isHome);
-    void onPageChange();
-  }, [location, isHome]);
+    void setBanner(showsBanner(location));
+    void onPageChange(location);
+  }, [location]);
 
   if (isHome) {
     return (

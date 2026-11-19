@@ -18,6 +18,12 @@ export const INTERSTITIAL_MIN_GAP_MS = 4 * 60 * 1000;
 export const canShowInterstitial = (lastShownAt: number, now: number) =>
   now - lastShownAt >= INTERSTITIAL_MIN_GAP_MS;
 
+/** Recitation player pages (murattal and mujawwad): no full-screen image ad there. */
+export const isPlayerPage = (path: string) => /^\/quran-(audio|tajweed)\/\d+\/?$/.test(path);
+
+/** The bottom banner shows on every page except the home page. */
+export const showsBanner = (path: string) => path !== "/" && path !== "";
+
 const KEY = "illuminated-credits";
 export function loadCredits(): number {
   const v = localStorage.getItem(KEY);
