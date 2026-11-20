@@ -11,3 +11,11 @@
 - [x] Recitation timer: correct total length and elapsed time.
 - [x] Illuminated Book: show the video picture as soon as the page opens.
 - [x] Illuminated Book answers inside the Android app.
+
+- [x] Curved bottom bar matching the supplied picture.
+- [x] Hadith books load inside the Android app.
+- [x] Banner on every page except home; no image ad on the player pages.
+- [x] Auto play continues to the next surah.
+- [x] Smaller home buttons and a whiter home page.
+- [x] Illuminated Book reward videos no longer hang when closed early.
+- [ ] Real-phone check of ads and hadith — needs the user's Android build.

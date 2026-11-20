@@ -38,3 +38,5 @@ use the editor.
 - Illuminated Book answers go through `/api/public/illuminated-book` (CORS limited to the Capacitor local origins); the Android app calls the stable published URL because the offline APK has no server, so the site must be republished after answer-service changes.
 - Bundled murattal MP3s are VBR, so each file (and each split surah, before splitting) must carry a Xing header with TOC; without it players misreport total length and elapsed time.
 
+- Hadith books ship inside the APK, so on native they are read straight from the bundled files (no Cache API); on web, caching is best-effort and must never block reading.
+- Player auto-advance tags each audio source with its surah number so a stale source from the previous surah is never loaded or played.
