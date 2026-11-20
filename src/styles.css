@@ -61,7 +61,7 @@
   --app-font-arabic: 'Cairo Variable', 'Cairo', sans-serif;
   --app-font-display: 'Marhey Variable', 'Marhey', 'Cairo Variable', sans-serif;
   --radius: 1.15rem;
-  --bottom-navigation-height: calc(min(86vw, 330px) * 0.4375);
+  --bottom-navigation-height: calc(min(60vw, 240px) * 0.4375 + 10px);
   --bottom-navigation-space: calc(var(--bottom-navigation-height) + env(safe-area-inset-bottom, 0px));
   --navigation-shadow: 0 -3px 16px hsl(var(--foreground) / 0.08);
   --startup-background: #f4f0e7;
@@ -110,8 +110,9 @@
 }
 
 .bottom-navigation {
-  /* Arch-shaped bar: cream band with a raised gold circle in the middle. */
-  --nav-width: min(86vw, 330px);
+  /* Arch-shaped bar: cream band with a raised gold circle in the middle,
+     sized to sit between the plant and the lantern of the home artwork. */
+  --nav-width: min(60vw, 240px);
   --nav-arch-top: hsl(44 60% 97% / 0.97);
   --nav-arch-bottom: hsl(42 42% 90% / 0.97);
   --nav-arch-edge: hsl(40 45% 72% / 0.85);
@@ -122,14 +123,21 @@
   --nav-gold-light: hsl(45 75% 86%);
   --nav-gold: hsl(41 52% 62%);
   --nav-gold-deep: hsl(38 46% 46%);
+  --nav-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   position: fixed;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 4px);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
   left: 50%;
-  transform: translateX(-50%);
   z-index: 1100;
   width: var(--nav-width);
   aspect-ratio: 400 / 175;
   pointer-events: none;
+  transform: translate3d(-50%, 0, 0);
+  will-change: transform;
+  animation: nav-rise 560ms var(--nav-spring) backwards;
+}
+@keyframes nav-rise {
+  from { opacity: 0; transform: translate3d(-50%, 40%, 0) scale(0.92); }
+  to { opacity: 1; transform: translate3d(-50%, 0, 0) scale(1); }
 }
 .bottom-navigation-arch {
   position: absolute;
@@ -137,7 +145,7 @@
   width: 100%;
   height: 100%;
   overflow: visible;
-  filter: drop-shadow(0 6px 10px hsl(40 30% 30% / 0.18)) drop-shadow(0 1px 1px hsl(40 30% 30% / 0.12));
+  filter: drop-shadow(0 5px 8px hsl(40 30% 30% / 0.18)) drop-shadow(0 1px 1px hsl(40 30% 30% / 0.12));
 }
 .bottom-navigation-arch-fill {
   stroke: var(--nav-arch-edge);
@@ -148,7 +156,6 @@
   fill: none;
   stroke: hsl(0 0% 100% / 0.7);
   stroke-width: 1.4;
-  transform-origin: center;
   clip-path: inset(0 0 55% 0);
   pointer-events: none;
 }
@@ -156,31 +163,103 @@
   position: absolute;
   display: grid;
   place-items: center;
-  width: 14%;
+  width: 15%;
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   border-radius: 999px;
   pointer-events: auto;
   outline: none;
-  transition: transform 160ms ease, background-color 160ms ease;
+  touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  transition: transform 260ms var(--nav-spring), background-color 200ms ease, box-shadow 200ms ease;
+  animation: nav-item-in 480ms var(--nav-spring) backwards;
 }
-.bottom-navigation .bottom-navigation-item svg { width: 64%; height: 64%; stroke-width: 2.1; }
-.bottom-navigation .bottom-navigation-item:active { transform: translate(-50%, -50%) scale(0.92); }
+@keyframes nav-item-in {
+  from { opacity: 0; transform: translate(-50%, -20%) scale(0.6); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+/* Soft glow that grows behind the icon on touch. */
+.bottom-navigation .bottom-navigation-item::before {
+  content: "";
+  position: absolute;
+  inset: -8%;
+  border-radius: inherit;
+  background: radial-gradient(circle, hsl(44 70% 80% / 0.55), transparent 70%);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 220ms ease, transform 320ms var(--nav-spring);
+  pointer-events: none;
+}
+.bottom-navigation .bottom-navigation-item:active::before { opacity: 1; transform: scale(1.15); transition-duration: 80ms; }
+@media (hover: hover) {
+  .bottom-navigation .bottom-navigation-item:hover { transform: translate(-50%, -58%) scale(1.06); }
+}
+.bottom-navigation .bottom-navigation-item:active { transform: translate(-50%, -50%) scale(0.88); transition-duration: 90ms; }
 .bottom-navigation .bottom-navigation-item:focus-visible { box-shadow: 0 0 0 2px var(--nav-home); }
+.bottom-navigation-icon { display: grid; place-items: center; width: 62%; height: 62%; }
+.bottom-navigation-icon svg { width: 100%; height: 100%; stroke-width: 2.1; }
 .bottom-navigation-item--home { color: var(--nav-home); }
 .bottom-navigation-door { fill: var(--nav-arch-top); }
 .bottom-navigation-item--book { color: var(--nav-book); }
 .bottom-navigation-item--bell { color: var(--nav-bell); }
 .bottom-navigation-item--search { color: var(--nav-search); }
+/* Small gold dot under the page you are on. */
+.bottom-navigation .bottom-navigation-item--active:not(.bottom-navigation-item--center)::after {
+  content: "";
+  position: absolute;
+  bottom: -6%;
+  left: 50%;
+  width: 14%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: var(--nav-gold-deep);
+  transform: translateX(-50%);
+  animation: nav-dot-in 360ms var(--nav-spring) both;
+}
+@keyframes nav-dot-in { from { transform: translateX(-50%) scale(0); } to { transform: translateX(-50%) scale(1); } }
 .bottom-navigation .bottom-navigation-item--center {
-  width: 18.5%;
+  width: 19.5%;
   color: var(--nav-home);
   background: radial-gradient(circle at 50% 35%, var(--nav-gold-light) 0%, var(--nav-gold) 62%, var(--nav-gold-deep) 100%);
   border: 2px solid hsl(44 70% 90% / 0.95);
   box-shadow: 0 4px 10px hsl(38 40% 30% / 0.28), inset 0 2px 4px hsl(0 0% 100% / 0.55), inset 0 -3px 6px hsl(36 45% 35% / 0.25);
 }
-.bottom-navigation .bottom-navigation-item--center svg { width: 56%; height: 56%; stroke-width: 2.4; }
+/* Gentle breathing halo around the centre button. */
+.bottom-navigation .bottom-navigation-item--center::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 hsl(44 75% 70% / 0.55);
+  animation: nav-halo 2.8s ease-out 1s infinite;
+  pointer-events: none;
+}
+@keyframes nav-halo {
+  0% { box-shadow: 0 0 0 0 hsl(44 75% 70% / 0.55); }
+  70%, 100% { box-shadow: 0 0 0 9px hsl(44 75% 70% / 0); }
+}
+.bottom-navigation .bottom-navigation-item--center .bottom-navigation-icon { width: 56%; height: 56%; }
+.bottom-navigation .bottom-navigation-item--center .bottom-navigation-icon svg { stroke-width: 2.4; }
+
+/* Each icon has its own short tap animation. */
+.bottom-navigation-icon--tapped { animation: nav-pop 420ms var(--nav-spring); }
+.bottom-navigation-item--bell .bottom-navigation-icon--tapped { animation: nav-ring 620ms ease; transform-origin: 50% 12%; }
+.bottom-navigation-item--book .bottom-navigation-icon--tapped { animation: nav-flip 520ms ease; }
+.bottom-navigation-item--search .bottom-navigation-icon--tapped { animation: nav-search 520ms var(--nav-spring); }
+.bottom-navigation-item--audio .bottom-navigation-icon--tapped { animation: nav-beat 560ms ease; }
+@keyframes nav-pop { 0% { transform: scale(1); } 35% { transform: scale(0.78) translateY(2px); } 70% { transform: scale(1.16) translateY(-2px); } 100% { transform: scale(1); } }
+@keyframes nav-ring { 0%, 100% { transform: rotate(0); } 15% { transform: rotate(16deg); } 30% { transform: rotate(-14deg); } 45% { transform: rotate(10deg); } 60% { transform: rotate(-6deg); } 75% { transform: rotate(3deg); } }
+@keyframes nav-flip { 0% { transform: scaleX(1); } 40% { transform: scaleX(-0.2) scaleY(1.05); } 100% { transform: scaleX(1); } }
+@keyframes nav-search { 0% { transform: rotate(0) scale(1); } 45% { transform: rotate(-20deg) scale(1.15); } 100% { transform: rotate(0) scale(1); } }
+@keyframes nav-beat { 0%, 100% { transform: scale(1); } 25% { transform: scale(1.18); } 45% { transform: scale(0.94); } 65% { transform: scale(1.1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .bottom-navigation,
+  .bottom-navigation .bottom-navigation-item,
+  .bottom-navigation .bottom-navigation-item::after,
+  .bottom-navigation-icon--tapped { animation: none !important; }
+  .bottom-navigation .bottom-navigation-item { transition: none; }
+}
 /* Room for the bottom banner ad (its real height is set by the ad code inside the app). */
 .app-content { padding-bottom: calc(24px + var(--ad-banner-height, 0px) + env(safe-area-inset-bottom, 0px)); }
 

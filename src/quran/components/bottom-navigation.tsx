@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import type { SVGProps } from "react";
+import type { MouseEvent, SVGProps } from "react";
 import { Bell, BookOpen, Headphones, Search, type LucideIcon } from "lucide-react";
 
 /** Solid house with a light door, as in the supplied bar design. */
@@ -27,6 +27,16 @@ const items: ReadonlyArray<{ to: string; label: string; icon: LucideIcon | typeo
 const ARCH =
   "M 22 132 C 85 -12, 315 -12, 378 132 A 19.5 19.5 0 0 1 350 158 C 300 70, 100 70, 50 158 A 19.5 19.5 0 0 1 22 132 Z";
 
+/** Replays the tapped icon's own short animation (bell rings, book opens, …) without re-rendering. */
+function playTapAnimation(event: MouseEvent<HTMLAnchorElement>) {
+  const icon = event.currentTarget.querySelector<HTMLElement>(".bottom-navigation-icon");
+  if (!icon) return;
+  icon.classList.remove("bottom-navigation-icon--tapped");
+  void icon.offsetWidth; // restart the animation
+  icon.classList.add("bottom-navigation-icon--tapped");
+  icon.addEventListener("animationend", () => icon.classList.remove("bottom-navigation-icon--tapped"), { once: true });
+}
+
 export function BottomNavigation() {
   const pathname = useLocation({ select: (location) => location.pathname });
   return (
@@ -49,10 +59,14 @@ export function BottomNavigation() {
             to={to}
             aria-current={active ? "page" : undefined}
             aria-label={label}
+            preload="intent"
             className={`bottom-navigation-item bottom-navigation-item--${tone} ${center ? "bottom-navigation-item--center" : ""} ${active ? "bottom-navigation-item--active" : ""}`}
-            style={{ left: `${x}%`, top: `${y}%` }}
+            style={{ left: `${x}%`, top: `${y}%`, animationDelay: `${80 + Math.abs(50 - x) * 4}ms` }}
+            onClick={playTapAnimation}
           >
-            <Icon aria-hidden="true" fill={filled ? "currentColor" : "none"} />
+            <span className="bottom-navigation-icon" aria-hidden="true">
+              <Icon aria-hidden="true" fill={filled ? "currentColor" : "none"} />
+            </span>
           </Link>
         );
       })}

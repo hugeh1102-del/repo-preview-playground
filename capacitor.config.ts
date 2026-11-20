@@ -8,6 +8,11 @@ const config: CapacitorConfig = {
     allowMixedContent: false,
   },
   plugins: {
+    LocalNotifications: {
+      // White logo silhouette for the status bar (res/drawable-*/ic_stat_notify.png).
+      smallIcon: "ic_stat_notify",
+      iconColor: "#1F5A3D",
+    },
     Admob: {
       // Publisher app ID provided by the user (2026-10-25).
       appID: "ca-app-pub-4072506919111365~3383451970",

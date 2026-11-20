@@ -23,12 +23,17 @@ export default function Notifications() {
     saveSettings(s);
     if (!native) return setMsg("تم الحفظ. الإشعارات تعمل داخل تطبيق الأندرويد فقط.");
     if (!(await requestPermission())) return setMsg("يرجى السماح للتطبيق بالإشعارات من إعدادات الهاتف.");
-    await applyReminders(s);
-    setMsg("تم حفظ الإعدادات وجدولة الإشعارات.");
+    try {
+      await applyReminders(s, true);
+      setMsg("تم حفظ الإعدادات وجدولة الإشعارات.");
+    } catch {
+      setMsg("تعذّرت جدولة الإشعارات. تأكد من السماح بالإشعارات للتطبيق ثم اضغط حفظ مرة أخرى.");
+    }
   }
 
-  const Row = ({ label, k, time }: { label: string; k: keyof ReminderSettings; time?: keyof ReminderSettings }) => (
-    <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card p-4">
+  // Plain render helper (not a nested component) so inputs keep focus while typing.
+  const row = (label: string, k: keyof ReminderSettings, time?: keyof ReminderSettings) => (
+    <div key={k} className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card p-4">
       <span className="font-semibold text-foreground">{label}</span>
       <div className="flex items-center gap-3">
         {time && <Input type="time" className="w-28" value={s[time] as string} onChange={(e) => set(time, e.target.value as never)} />}
@@ -43,9 +48,9 @@ export default function Notifications() {
         <Link href="/" className="p-2 text-foreground" aria-label="العودة"><ChevronRight /></Link>
         <h1 className="text-2xl font-bold text-foreground">الإشعارات والتذكير</h1>
       </div>
-      <Row label="أذكار الصباح" k="morningEnabled" time="morningTime" />
-      <Row label="أذكار المساء" k="eveningEnabled" time="eveningTime" />
-      <Row label="تسبيحة أو دعاء كل نصف ساعة" k="halfHourlyEnabled" />
+      {row("أذكار الصباح", "morningEnabled", "morningTime")}
+      {row("أذكار المساء", "eveningEnabled", "eveningTime")}
+      {row("تسبيحة أو دعاء كل نصف ساعة", "halfHourlyEnabled")}
       <div className="space-y-3 rounded-xl border border-border bg-card p-4">
         <div className="flex items-center justify-between">
           <span className="font-semibold text-foreground">إيقاف تذكير نصف الساعة ليلاً</span>
