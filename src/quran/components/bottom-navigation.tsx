@@ -14,14 +14,14 @@ function HomeSolid(props: SVGProps<SVGSVGElement>) {
 
 /**
  * Curved (arch-shaped) bottom bar. Item positions are percentages of the arch
- * drawing below (viewBox 400 x 175) so the icons sit on the middle of the band.
+ * drawing below (viewBox 400 x 160) so the icons sit on the middle of the band.
  */
 const items: ReadonlyArray<{ to: string; label: string; icon: LucideIcon | typeof HomeSolid; tone: string; x: number; y: number; filled?: boolean; center?: boolean }> = [
-  { to: "/", label: "الصفحة الرئيسية", icon: HomeSolid, tone: "home", x: 85.6, y: 64 },
-  { to: "/illuminated-book", label: "الكتاب المضيئ", icon: BookOpen, tone: "book", x: 69.6, y: 40.5 },
-  { to: "/quran-audio", label: "القرآن المرتل", icon: Headphones, tone: "audio", x: 50, y: 31, center: true },
-  { to: "/notifications", label: "الإشعارات", icon: Bell, tone: "bell", x: 30.4, y: 40.5, filled: true },
-  { to: "/search", label: "البحث", icon: Search, tone: "search", x: 14.4, y: 64 },
+  { to: "/", label: "الصفحة الرئيسية", icon: HomeSolid, tone: "home", x: 85.6, y: 70 },
+  { to: "/illuminated-book", label: "الكتاب المضيئ", icon: BookOpen, tone: "book", x: 69.6, y: 44.3 },
+  { to: "/quran-audio", label: "القرآن المرتل", icon: Headphones, tone: "audio", x: 50, y: 33.9, center: true },
+  { to: "/notifications", label: "الإشعارات", icon: Bell, tone: "bell", x: 30.4, y: 44.3, filled: true },
+  { to: "/search", label: "البحث", icon: Search, tone: "search", x: 14.4, y: 70 },
 ];
 
 const ARCH =
@@ -41,7 +41,7 @@ export function BottomNavigation() {
   const pathname = useLocation({ select: (location) => location.pathname });
   return (
     <nav className={`bottom-navigation ${pathname === "/" ? "bottom-navigation--home" : ""}`} aria-label="التنقل السفلي" dir="rtl">
-      <svg className="bottom-navigation-arch" viewBox="0 0 400 175" aria-hidden="true" focusable="false">
+      <svg className="bottom-navigation-arch" viewBox="0 0 400 160" aria-hidden="true" focusable="false">
         <defs>
           <linearGradient id="nav-arch-fill" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="var(--nav-arch-top)" />
