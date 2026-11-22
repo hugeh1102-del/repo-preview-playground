@@ -2,9 +2,8 @@ export type AskResult =
   | { ok: true; answer: string; references: { id: string; label: string; text: string }[] }
   | { ok: false; error: string };
 
-/** Shared by the Illuminated Book endpoint (used by the website and the Android app). */
 export async function askQuestion(question: string): Promise<AskResult> {
-  const key = process.env["LOVABLE_API_KEY"];
+  const key = process.env["GEMINI_API_KEY"] || process.env["LOVABLE_API_KEY"];
   if (!key) return { ok: false, error: "خدمة الإجابات غير مهيأة حاليًا." };
   try {
     const { answerReligiousQuestion } = await import("./answer.server");
