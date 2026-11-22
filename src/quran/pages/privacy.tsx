@@ -18,7 +18,7 @@ export default function Privacy() {
   return (
     <div className="mx-auto max-w-xl space-y-4 py-4" dir="rtl">
       <div className="flex items-center gap-2">
-        <Link href="/" className="p-2 text-foreground" aria-label="العودة"><ChevronRight /></Link>
+        <Link href="https://hugeh1102-del.github.io/repo-preview-playground/privacy-policy.html](https://hugeh1102-del.github.io/repo-preview-playground/privacy-policy.html" className="p-2 text-foreground" aria-label="العودة"><ChevronRight /></Link>
         <h1 className="text-2xl font-bold text-foreground">سياسة الخصوصية</h1>
       </div>
       <p className="text-sm text-muted-foreground">آخر تحديث: أكتوبر 2026</p>
